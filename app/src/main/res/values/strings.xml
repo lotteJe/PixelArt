@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">PixelArt</string>
+    <string name="toolbox">Toolbox</string>
+    <string name="clear">Clear</string>
+    <string name="choose_your_color">Choose your color:</string>
+    <string name="choose_your_drawstyle">Choose your drawstyle:</string>
+    <string name="free">Free</string>
+    <string name="line">Line</string>
+    <string name="square">Square</string>
 </resources>

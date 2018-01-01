@@ -1,7 +1,7 @@
 package com.example.android.pixelart.models;
 
 /**
- * Created by lottejespers on 1/01/18.
+ * Created by lottejespers.
  */
 
 public class Grid {
