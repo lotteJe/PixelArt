@@ -30,6 +30,16 @@
             android:src="@drawable/ic_tools" />
 
         <ImageButton
+            android:id="@+id/cameraBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_toLeftOf="@id/toolboxBtn"
+            android:layout_toStartOf="@id/toolboxBtn"
+            android:src="@drawable/ic_camera" />
+
+        <ImageButton
             android:id="@+id/eraseBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -67,8 +77,8 @@
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_margin="8dp"
-            android:layout_toLeftOf="@id/toolboxBtn"
-            android:layout_toStartOf="@id/toolboxBtn"
+            android:layout_toLeftOf="@id/cameraBtn"
+            android:layout_toStartOf="@id/cameraBtn"
             android:textSize="24sp" />
 
 

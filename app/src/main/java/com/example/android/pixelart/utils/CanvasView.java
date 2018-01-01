@@ -5,6 +5,7 @@ package com.example.android.pixelart.utils;
  */
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -281,6 +282,18 @@ public class CanvasView extends View {
                 if (!this.drawing.isChecked(i, j)) {
                     clear(i, j);
                 }
+            }
+        }
+        invalidate();
+    }
+
+    public void drawPhoto(Bitmap bitmap) {
+        if (bitmap.getWidth() > this.gridColumns || bitmap.getHeight() > this.gridRows) {
+            return;
+        }
+        for (int i = 0; i < bitmap.getWidth(); i++) {
+            for (int j = 0; j < bitmap.getHeight(); j++) {
+                this.grid.setCellChecked(true, i, j ,bitmap.getPixel(i, j));
             }
         }
         invalidate();

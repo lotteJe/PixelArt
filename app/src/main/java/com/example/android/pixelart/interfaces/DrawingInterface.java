@@ -26,4 +26,6 @@ public interface DrawingInterface {
     String getDrawStyle();
 
     void setDrawStyle(String drawStyle);
+
+    void dispatchTakePictureIntent();
 }
