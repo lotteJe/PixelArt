@@ -27,6 +27,7 @@ public class CanvasView extends View {
     private int columnBegin;
     private int rowBegin;
     private Grid drawing;
+    private int color;
 
     public CanvasView(Context context) {
         this(context, null);
@@ -38,7 +39,7 @@ public class CanvasView extends View {
     }
 
     public void setColor(int color) {
-        this.paint.setColor(color);
+        this.color = color;
     }
 
     public void setDrawStyle(String drawStyle) {
@@ -92,6 +93,7 @@ public class CanvasView extends View {
         for (int i = 0; i < this.gridColumns; i++) {
             for (int j = 0; j < this.gridRows; j++) {
                 if (this.grid.isChecked(i, j)) {
+                    this.paint.setColor(this.grid.getColor(i, j));
                     canvas.drawRect((float) (this.cellWidth * i), (float) (this.cellHeight * j), (float) ((i + 1) * this.cellWidth), (float) ((j + 1) * this.cellHeight), this.paint);
                 }
             }
@@ -157,6 +159,19 @@ public class CanvasView extends View {
                         break;
                 }
                 break;
+            case "erase":
+                switch (event.getAction()) {
+                    case 0:
+                        clear(column, row);
+                        invalidate();
+                        break;
+                    case 2:
+                        clear(column, row);
+                        invalidate();
+                        break;
+                    default:
+                        break;
+                }
         }
         return true;
     }
@@ -170,12 +185,12 @@ public class CanvasView extends View {
             int rowMin = Math.max(rowBegin - offset, 0);
             int rowMax = Math.min(rowBegin + offset, this.gridRows - 1);
             for (int x = columnMin; x <= columnMax; x++) {
-                this.grid.setCellChecked(true, x, rowMin);
-                this.grid.setCellChecked(true, x, rowMax);
+                this.grid.setCellChecked(true, x, rowMin, this.color);
+                this.grid.setCellChecked(true, x, rowMax, this.color);
             }
             for (int y = rowMin; y <= rowMax; y++) {
-                this.grid.setCellChecked(true, columnMin, y);
-                this.grid.setCellChecked(true, columnMax, y);
+                this.grid.setCellChecked(true, columnMin, y, this.color);
+                this.grid.setCellChecked(true, columnMax, y, this.color);
             }
         }
     }
@@ -190,40 +205,40 @@ public class CanvasView extends View {
             if (dx > 0) {
                 if (Math.abs(dy) > Math.abs(dx) && dy > 0) {
                     for (y = rowBegin; y < rowEnd; y++) {
-                        this.grid.setCellChecked(true, columnBegin + (((y - rowBegin) * dx) / dy), y);
+                        this.grid.setCellChecked(true, columnBegin + (((y - rowBegin) * dx) / dy), y, this.color);
                     }
                 } else if (Math.abs(dy) <= Math.abs(dx) || dy >= 0) {
                     for (x = columnBegin; x <= columnEnd; x++) {
-                        this.grid.setCellChecked(true, x, rowBegin + (((x - columnBegin) * dy) / dx));
+                        this.grid.setCellChecked(true, x, rowBegin + (((x - columnBegin) * dy) / dx), this.color);
                     }
                 } else {
                     for (y = rowBegin; y > rowEnd; y--) {
-                        this.grid.setCellChecked(true, columnBegin + (((y - rowBegin) * dx) / dy), y);
+                        this.grid.setCellChecked(true, columnBegin + (((y - rowBegin) * dx) / dy), y, this.color);
                     }
                 }
             } else if (dx < 0) {
                 if (Math.abs(dy) > Math.abs(dx) && dy > 0) {
                     for (y = rowBegin; y < rowEnd; y++) {
-                        this.grid.setCellChecked(true, columnBegin + (((y - rowBegin) * dx) / dy), y);
+                        this.grid.setCellChecked(true, columnBegin + (((y - rowBegin) * dx) / dy), y, this.color);
                     }
                 } else if (Math.abs(dy) <= Math.abs(dx) || dy >= 0) {
                     for (x = columnBegin; x >= columnEnd; x--) {
-                        this.grid.setCellChecked(true, x, rowBegin + (((x - columnBegin) * dy) / dx));
+                        this.grid.setCellChecked(true, x, rowBegin + (((x - columnBegin) * dy) / dx), this.color);
                     }
                 } else {
                     for (y = rowBegin; y > rowEnd; y--) {
-                        this.grid.setCellChecked(true, columnBegin + (((y - rowBegin) * dx) / dy), y);
+                        this.grid.setCellChecked(true, columnBegin + (((y - rowBegin) * dx) / dy), y, this.color);
                     }
                 }
             } else if (dx != 0) {
             } else {
                 if (dy > 0) {
                     for (y = rowBegin; y <= rowEnd; y++) {
-                        this.grid.setCellChecked(true, columnBegin, y);
+                        this.grid.setCellChecked(true, columnBegin, y, this.color);
                     }
                 } else if (dy < 0) {
                     for (y = rowBegin; y >= rowEnd; y--) {
-                        this.grid.setCellChecked(true, columnBegin, y);
+                        this.grid.setCellChecked(true, columnBegin, y, this.color);
                     }
                 }
             }
@@ -232,7 +247,7 @@ public class CanvasView extends View {
 
     private void cellCheck(int column, int row) {
         if (column >= 0 && row >= 0 && column < this.gridColumns && row < this.gridRows) {
-            this.grid.setCellChecked(true, column, row);
+            this.grid.setCellChecked(true, column, row, this.color);
         }
     }
 
@@ -255,7 +270,7 @@ public class CanvasView extends View {
         this.drawing = new Grid(gridColumns, gridRows);
         for (int i = 0; i < this.gridColumns; i++) {
             for (int j = 0; j < this.gridRows; j++) {
-                this.drawing.setCellChecked(this.grid.isChecked(i, j), i, j);
+                this.drawing.setCellChecked(this.grid.isChecked(i, j), i, j, this.color);
             }
         }
     }

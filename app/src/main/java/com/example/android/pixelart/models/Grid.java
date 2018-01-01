@@ -8,15 +8,18 @@ public class Grid {
     private boolean[][] grid;
     private int gridRows;
     private int gridColumns;
+    private int[][] colorGrid;
 
 
     public Grid(int columns, int rows) {
         setGridRows(rows);
         setGridColumns(columns);
+        colorGrid = new int[columns][rows];
         grid = new boolean[columns][rows];
         for (int i = 0; i < columns; i++) {
             for (int j = 0; j < rows; j++) {
                 grid[i][j] = false;
+                colorGrid[i][j] = 0;
             }
         }
     }
@@ -45,7 +48,12 @@ public class Grid {
         return grid[i][j];
     }
 
-    public void setCellChecked(boolean check, int i, int j) {
+    public void setCellChecked(boolean check, int i, int j, int color) {
         grid[i][j] = check;
+        colorGrid[i][j] = color;
+    }
+
+    public int getColor(int column, int row) {
+        return colorGrid[column][row];
     }
 }

@@ -1,0 +1,76 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginLeft="8dp"
+    android:layout_marginRight="8dp"
+    android:layout_weight="1"
+    android:orientation="vertical">
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#fff">
+
+        <com.example.android.pixelart.utils.CanvasView
+            android:id="@+id/canvas"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@id/toolboxBtn"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true" />
+
+        <ImageButton
+            android:id="@+id/toolboxBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_toLeftOf="@id/eraseBtn"
+            android:layout_toStartOf="@id/eraseBtn"
+            android:src="@drawable/ic_tools" />
+
+        <ImageButton
+            android:id="@+id/eraseBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_toLeftOf="@id/clearBtn"
+            android:layout_toStartOf="@id/clearBtn"
+            android:src="@drawable/ic_erase" />
+
+        <ImageButton
+            android:id="@+id/clearBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/ic_trash" />
+
+        <ImageView
+            android:id="@+id/colorDrawing"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="8dp"
+            android:layout_toLeftOf="@id/styleDrawing"
+            android:layout_toStartOf="@id/styleDrawing"
+            android:backgroundTint="@android:color/transparent"
+            android:src="@drawable/ic_circle" />
+
+        <TextView
+            android:id="@+id/styleDrawing"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="8dp"
+            android:layout_toLeftOf="@id/toolboxBtn"
+            android:layout_toStartOf="@id/toolboxBtn"
+            android:textSize="24sp" />
+
+
+    </RelativeLayout>
+</LinearLayout>

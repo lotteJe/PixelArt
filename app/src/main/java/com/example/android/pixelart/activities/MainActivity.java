@@ -2,56 +2,93 @@ package com.example.android.pixelart.activities;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.preference.PreferenceManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
 import com.example.android.pixelart.R;
+import com.example.android.pixelart.fragments.DrawingFragment;
+import com.example.android.pixelart.fragments.ToolboxFragment;
+import com.example.android.pixelart.interfaces.DrawingInterface;
 import com.example.android.pixelart.models.Grid;
 import com.example.android.pixelart.utils.CanvasView;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements DrawingInterface {
 
-    private CanvasView canvasView;
-    private Button toolboxBtn;
-    private Button clearBtn;
+    private DrawingFragment drawingFragment;
+    private ToolboxFragment toolboxFragment;
+
     private Grid grid;
+    private int color = Color.BLUE;
+    private String drawStyle = "free";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        canvasView = (CanvasView) findViewById(R.id.canvas);
+        this.grid = new Grid(26, 26);
 
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        int color = preferences.getInt("color", Color.BLACK);
-        String drawStyle = preferences.getString("drawStyle", "free");
+        drawingFragment = new DrawingFragment();
+        toolboxFragment = new ToolboxFragment();
 
-        canvasView.setColor(color);
-        canvasView.setDrawStyle(drawStyle);
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.fragment_container, drawingFragment);
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            ft.add(R.id.fragment_container, toolboxFragment);
+        }
+        ft.commit();
+    }
 
-        this.grid = new Grid(40, 40);
+    public Grid getGrid() {
+        return grid;
+    }
 
-        canvasView.setGrid(this.grid);
-        toolboxBtn = (Button) findViewById(R.id.toolboxBtn);
-        toolboxBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, ToolboxActivity.class);
-                startActivity(intent);
-            }
-        });
-        clearBtn = (Button) findViewById(R.id.clearBtn);
-        clearBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                canvasView.clearCanvasDrawing();
-            }
-        });
+    public void setGrid(Grid grid) {
+        this.grid = grid;
+    }
+
+    public int getColor() {
+        return color;
+    }
+
+    public void setColor(int color) {
+        this.color = color;
+        drawingFragment.updateView();
+    }
+
+    public String getDrawStyle() {
+        return drawStyle;
+    }
+
+    public void setDrawStyle(String drawStyle) {
+        this.drawStyle = drawStyle;
+        drawingFragment.updateView();
+    }
+
+    @Override
+    public void showDrawingFragment() {
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.fragment_container, drawingFragment);
+            ft.addToBackStack(null);
+            ft.commit();
+        }
+    }
+
+    @Override
+    public void showToolboxFragment() {
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.fragment_container, toolboxFragment);
+            ft.addToBackStack(null);
+            ft.commit();
+        }
     }
 }
 
