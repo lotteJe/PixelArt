@@ -7,7 +7,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Choose your color:" />
+        android:text="@string/choose_your_color" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -48,7 +48,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:text="Choose your drawstyle:" />
+        android:text="@string/choose_your_drawstyle" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -62,7 +62,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:backgroundTint="@android:color/transparent"
-            android:text="Free" />
+            android:text="@string/free" />
 
         <Button
             android:id="@+id/lineBtn"
@@ -70,7 +70,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:backgroundTint="@android:color/transparent"
-            android:text="Line" />
+            android:text="@string/line" />
 
         <Button
             android:id="@+id/squareBtn"
@@ -78,7 +78,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:backgroundTint="@android:color/transparent"
-            android:text="Square" />
+            android:text="@string/square" />
 
 
     </LinearLayout>

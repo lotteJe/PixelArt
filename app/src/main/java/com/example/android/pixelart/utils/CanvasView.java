@@ -1,7 +1,7 @@
 package com.example.android.pixelart.utils;
 
 /**
- * Created by lottejespers on 7/11/17.
+ * Created by lottejespers.
  */
 
 import android.content.Context;
