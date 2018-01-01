@@ -1,6 +1,7 @@
 package com.example.android.pixelart.fragments;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -45,6 +46,12 @@ public class DrawingFragment extends Fragment {
                 ((DrawingInterface) getActivity()).showToolboxFragment();
             }
         });
+        v.findViewById(R.id.cameraBtn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((DrawingInterface) getActivity()).dispatchTakePictureIntent();
+            }
+        });
         v.findViewById(R.id.clearBtn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -81,4 +88,7 @@ public class DrawingFragment extends Fragment {
 
     }
 
+    public void drawPhoto(Bitmap bitmap) {
+        canvasView.drawPhoto(bitmap);
+    }
 }
