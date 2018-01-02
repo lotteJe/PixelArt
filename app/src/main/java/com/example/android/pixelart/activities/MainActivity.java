@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity implements DrawingInterface 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        this.grid = new Grid(26, 26);
+        this.grid = new Grid(10, 10);
 
         drawingFragment = new DrawingFragment();
         toolboxFragment = new ToolboxFragment();
