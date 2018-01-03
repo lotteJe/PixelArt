@@ -186,12 +186,12 @@ public class CanvasView extends View {
             int rowMin = Math.max(rowBegin - offset, 0);
             int rowMax = Math.min(rowBegin + offset, this.gridRows - 1);
             for (int x = columnMin; x <= columnMax; x++) {
-                this.grid.setCellChecked(true, x, rowMin, this.color);
-                this.grid.setCellChecked(true, x, rowMax, this.color);
+                this.grid.setCellChecked(x, rowMin, this.color);
+                this.grid.setCellChecked(x, rowMax, this.color);
             }
             for (int y = rowMin; y <= rowMax; y++) {
-                this.grid.setCellChecked(true, columnMin, y, this.color);
-                this.grid.setCellChecked(true, columnMax, y, this.color);
+                this.grid.setCellChecked(columnMin, y, this.color);
+                this.grid.setCellChecked(columnMax, y, this.color);
             }
         }
     }
@@ -206,40 +206,40 @@ public class CanvasView extends View {
             if (dx > 0) {
                 if (Math.abs(dy) > Math.abs(dx) && dy > 0) {
                     for (y = rowBegin; y < rowEnd; y++) {
-                        this.grid.setCellChecked(true, columnBegin + (((y - rowBegin) * dx) / dy), y, this.color);
+                        this.grid.setCellChecked(columnBegin + (((y - rowBegin) * dx) / dy), y, this.color);
                     }
                 } else if (Math.abs(dy) <= Math.abs(dx) || dy >= 0) {
                     for (x = columnBegin; x <= columnEnd; x++) {
-                        this.grid.setCellChecked(true, x, rowBegin + (((x - columnBegin) * dy) / dx), this.color);
+                        this.grid.setCellChecked(x, rowBegin + (((x - columnBegin) * dy) / dx), this.color);
                     }
                 } else {
                     for (y = rowBegin; y > rowEnd; y--) {
-                        this.grid.setCellChecked(true, columnBegin + (((y - rowBegin) * dx) / dy), y, this.color);
+                        this.grid.setCellChecked(columnBegin + (((y - rowBegin) * dx) / dy), y, this.color);
                     }
                 }
             } else if (dx < 0) {
                 if (Math.abs(dy) > Math.abs(dx) && dy > 0) {
                     for (y = rowBegin; y < rowEnd; y++) {
-                        this.grid.setCellChecked(true, columnBegin + (((y - rowBegin) * dx) / dy), y, this.color);
+                        this.grid.setCellChecked(columnBegin + (((y - rowBegin) * dx) / dy), y, this.color);
                     }
                 } else if (Math.abs(dy) <= Math.abs(dx) || dy >= 0) {
                     for (x = columnBegin; x >= columnEnd; x--) {
-                        this.grid.setCellChecked(true, x, rowBegin + (((x - columnBegin) * dy) / dx), this.color);
+                        this.grid.setCellChecked(x, rowBegin + (((x - columnBegin) * dy) / dx), this.color);
                     }
                 } else {
                     for (y = rowBegin; y > rowEnd; y--) {
-                        this.grid.setCellChecked(true, columnBegin + (((y - rowBegin) * dx) / dy), y, this.color);
+                        this.grid.setCellChecked(columnBegin + (((y - rowBegin) * dx) / dy), y, this.color);
                     }
                 }
             } else if (dx != 0) {
             } else {
                 if (dy > 0) {
                     for (y = rowBegin; y <= rowEnd; y++) {
-                        this.grid.setCellChecked(true, columnBegin, y, this.color);
+                        this.grid.setCellChecked(columnBegin, y, this.color);
                     }
                 } else if (dy < 0) {
                     for (y = rowBegin; y >= rowEnd; y--) {
-                        this.grid.setCellChecked(true, columnBegin, y, this.color);
+                        this.grid.setCellChecked(columnBegin, y, this.color);
                     }
                 }
             }
@@ -248,7 +248,7 @@ public class CanvasView extends View {
 
     private void cellCheck(int column, int row) {
         if (column >= 0 && row >= 0 && column < this.gridColumns && row < this.gridRows) {
-            this.grid.setCellChecked(true, column, row, this.color);
+            this.grid.setCellChecked(column, row, this.color);
         }
     }
 
@@ -271,7 +271,7 @@ public class CanvasView extends View {
         this.drawing = new Grid(gridColumns, gridRows);
         for (int i = 0; i < this.gridColumns; i++) {
             for (int j = 0; j < this.gridRows; j++) {
-                this.drawing.setCellChecked(this.grid.isChecked(i, j), i, j, this.color);
+                this.drawing.setCellChecked(i, j, this.grid.getColor(i, j));
             }
         }
     }
@@ -293,9 +293,17 @@ public class CanvasView extends View {
         }
         for (int i = 0; i < bitmap.getWidth(); i++) {
             for (int j = 0; j < bitmap.getHeight(); j++) {
-                this.grid.setCellChecked(true, i, j ,bitmap.getPixel(i, j));
+                this.grid.setCellChecked(i, j, bitmap.getPixel(i, j));
             }
         }
+        invalidate();
+    }
+
+    public void drawSavedImage(Grid grid) {
+        if (grid.getGridColumns() > this.gridColumns || grid.getGridRows() > this.gridRows) {
+            return;
+        }
+        this.grid = grid;
         invalidate();
     }
 }

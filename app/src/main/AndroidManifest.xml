@@ -25,6 +25,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.android.pixelart.activities.MainActivity" />
         </activity>
+        <provider
+            android:name=".persistency.PixelArtDBProvider"
+            android:authorities="com.example.android.pixelart"
+            android:exported="false" />
     </application>
 
 </manifest>

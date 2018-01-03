@@ -67,7 +67,6 @@ public class DrawingFragment extends Fragment {
             }
         });
 
-
         colorAanduiding = (ImageView) v.findViewById(R.id.colorDrawing);
         styleDrawing = (TextView) v.findViewById(R.id.styleDrawing);
         updateView();
@@ -85,10 +84,13 @@ public class DrawingFragment extends Fragment {
 
         colorAanduiding.setColorFilter(this.color);
         styleDrawing.setText(this.drawStyle);
-
     }
 
     public void drawPhoto(Bitmap bitmap) {
         canvasView.drawPhoto(bitmap);
+    }
+
+    public void drawSavedImage(Grid grid) {
+        canvasView.drawSavedImage(grid);
     }
 }

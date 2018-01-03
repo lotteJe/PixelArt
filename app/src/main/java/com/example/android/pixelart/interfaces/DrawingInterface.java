@@ -1,8 +1,8 @@
 package com.example.android.pixelart.interfaces;
 
-import android.content.res.Configuration;
-import android.support.v4.app.FragmentTransaction;
+import android.net.Uri;
 
+import com.example.android.pixelart.adapters.DrawingCursorAdapter;
 import com.example.android.pixelart.models.Grid;
 
 /**
@@ -28,4 +28,12 @@ public interface DrawingInterface {
     void setDrawStyle(String drawStyle);
 
     void dispatchTakePictureIntent();
+
+    void showLibraryFragment();
+
+    DrawingCursorAdapter getmCursorAdapter();
+
+    void setCurrentDrawingUri(Uri currentDrawingUri);
+
+    void setShowDrawing(boolean showDrawing);
 }
