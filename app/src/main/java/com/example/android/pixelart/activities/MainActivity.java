@@ -221,6 +221,7 @@ public class MainActivity extends AppCompatActivity implements DrawingInterface,
                                 public void onClick(DialogInterface dialog, int which) {
                                     if (which == 0) {
                                         saveDrawing();
+                                        currentDrawingUri = null;
                                     } else {
                                         updateDrawing();
                                         currentDrawingUri = null;
