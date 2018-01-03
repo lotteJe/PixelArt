@@ -9,21 +9,17 @@ import java.util.List;
  */
 
 public class Grid {
-    private boolean[][] grid;
+    private int[][] grid;
     private int gridRows;
     private int gridColumns;
-    private int[][] colorGrid;
-
 
     public Grid(int columns, int rows) {
         setGridRows(rows);
         setGridColumns(columns);
-        colorGrid = new int[columns][rows];
-        grid = new boolean[columns][rows];
+        grid = new int[columns][rows];
         for (int i = 0; i < columns; i++) {
             for (int j = 0; j < rows; j++) {
-                grid[i][j] = false;
-                colorGrid[i][j] = 0;
+                grid[i][j] = 0;
             }
         }
     }
@@ -45,19 +41,26 @@ public class Grid {
     }
 
     public void clear(int column, int row) {
-        grid[column][row] = false;
+        grid[column][row] = 0;
     }
 
-    public boolean isChecked(int i, int j) {
-        return grid[i][j];
+    public boolean isChecked(int column, int row) {
+        return grid[column][row] != 0;
     }
 
-    public void setCellChecked(boolean check, int i, int j, int color) {
-        grid[i][j] = check;
-        colorGrid[i][j] = color;
+    public void setCellChecked(int i, int j, int color) {
+        grid[i][j] = color;
     }
 
     public int getColor(int column, int row) {
-        return colorGrid[column][row];
+        return grid[column][row];
+    }
+
+    public void clearGrid() {
+        for (int i = 0; i < gridColumns; i++) {
+            for (int j = 0; j < gridRows; j++) {
+                grid[i][j] = 0;
+            }
+        }
     }
 }

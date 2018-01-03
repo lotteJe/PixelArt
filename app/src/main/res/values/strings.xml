@@ -10,4 +10,7 @@
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="erase">erase</string>
+    <string name="action_open_library">Open library</string>
+    <string name="action_save_drawing">Save drawing</string>
+    <string name="empty_view_text">Get started by drawing something</string>
 </resources>
