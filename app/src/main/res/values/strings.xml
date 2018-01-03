@@ -11,6 +11,8 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="erase">erase</string>
     <string name="action_open_library">Open library</string>
-    <string name="action_save_drawing">Save drawing</string>
+    <string name="action_update">Update this drawing</string>
+    <string name="action_save_as">Save as...</string>
     <string name="empty_view_text">Get started by drawing something</string>
+    <string name="choose">Choose</string>
 </resources>

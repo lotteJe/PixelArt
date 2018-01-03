@@ -36,4 +36,6 @@ public interface DrawingInterface {
     void setCurrentDrawingUri(Uri currentDrawingUri);
 
     void setShowDrawing(boolean showDrawing);
+
+    void setDrawingId(long drawingId);
 }

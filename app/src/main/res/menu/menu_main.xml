@@ -5,9 +5,14 @@
     tools:context=".activities.MainActivity">
 
     <item
-        android:id="@+id/action_save_drawing"
+        android:id="@+id/action_update"
         android:icon="@drawable/ic_save"
-        android:title="@string/action_save_drawing"
+        android:title="@string/action_update"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_save_as"
+        android:icon="@drawable/ic_save"
+        android:title="@string/action_save_as"
         app:showAsAction="never" />
 
     <item
