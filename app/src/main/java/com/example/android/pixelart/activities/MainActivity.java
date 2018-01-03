@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity implements DrawingInterface,
     private LibraryFragment libraryFragment;
 
     private Grid grid;
-    private int color = Color.BLUE;
+    private int color = getResources().getColor(android.R.color.holo_blue_dark);
     private String drawStyle = "free";
     private Bitmap bitmap;
     private boolean photo;
@@ -317,6 +317,17 @@ public class MainActivity extends AppCompatActivity implements DrawingInterface,
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         mCursorAdapter.swapCursor(null);
+    }
+
+    public void deleteDrawing(int id) {
+        String selectionD = DrawingEntry._ID + "=?";
+        String selectionP = PixelEntry.COLUMN_DRAWING_ID + "=?";
+        String[] selectionArgs = new String[]{String.valueOf(id)};
+        int rowsDeleted = getContentResolver().delete(DrawingEntry.CONTENT_URI, selectionD, selectionArgs);
+        //foreign key, delete on cascade werkt niet, dus handmatig
+        int pixelsRowsDeleted = getContentResolver().delete(PixelEntry.CONTENT_URI, selectionP, selectionArgs);
+        this.grid.clearGrid();
+        showDrawingFragment();
     }
 }
 

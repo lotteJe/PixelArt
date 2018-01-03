@@ -151,10 +151,14 @@ public class PixelArtDBProvider extends ContentProvider {
                 selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
                 rowsDeleted = db.delete(DrawingEntry.TABLE_NAME, selection, selectionArgs);
                 break;
-//            case PIXELS:
-//                break;
-//            case PIXEL_ID:
-//                break;
+            case PIXELS:
+                rowsDeleted = db.delete(PixelEntry.TABLE_NAME, selection, selectionArgs);
+                break;
+            case PIXEL_ID:
+                selection = PixelEntry._ID + "=?";
+                selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
+                rowsDeleted = db.delete(PixelEntry.TABLE_NAME, selection, selectionArgs);
+                break;
             default:
                 throw new IllegalArgumentException("Deletion is not supported for " + uri);
         }

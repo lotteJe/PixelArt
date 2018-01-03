@@ -27,7 +27,7 @@ public class DrawingFragment extends Fragment {
     private int color;
     private String drawStyle;
     private ImageView colorAanduiding;
-    private TextView styleDrawing;
+    private ImageView styleDrawing;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,13 +62,14 @@ public class DrawingFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 drawStyle = "erase";
-                styleDrawing.setText(drawStyle);
+                styleDrawing.setImageResource(getDrawstyle(drawStyle));
+                colorAanduiding.setColorFilter(Color.WHITE);
                 canvasView.setDrawStyle(drawStyle);
             }
         });
 
         colorAanduiding = (ImageView) v.findViewById(R.id.colorDrawing);
-        styleDrawing = (TextView) v.findViewById(R.id.styleDrawing);
+        styleDrawing = (ImageView) v.findViewById(R.id.styleDrawing);
         updateView();
         return v;
     }
@@ -83,7 +84,23 @@ public class DrawingFragment extends Fragment {
         canvasView.setDrawStyle(this.drawStyle);
 
         colorAanduiding.setColorFilter(this.color);
-        styleDrawing.setText(this.drawStyle);
+
+        styleDrawing.setImageResource(getDrawstyle(drawStyle));
+    }
+
+    private int getDrawstyle(String drawStyle) {
+        switch (drawStyle) {
+            case "erase":
+                return R.drawable.ic_erase;
+            case "free":
+                return R.drawable.ic_line_02;
+            case "square":
+                return R.drawable.ic_square;
+            case "line":
+                return R.drawable.ic_line;
+            default:
+                return R.drawable.ic_line_02;
+        }
     }
 
     public void drawPhoto(Bitmap bitmap) {

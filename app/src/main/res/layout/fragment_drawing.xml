@@ -7,17 +7,25 @@
     android:orientation="vertical">
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#fff">
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#fff"
+        android:gravity="center_vertical|center_horizontal">
 
-        <com.example.android.pixelart.utils.CanvasView
-            android:id="@+id/canvas"
+        <com.example.android.pixelart.utils.DynamicSquareLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_above="@id/toolboxBtn"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true" />
+            android:layout_height="wrap_content"
+            android:layout_above="@id/clearBtn"
+            android:gravity="center_vertical|center_horizontal">
+
+            <com.example.android.pixelart.utils.CanvasView
+                android:id="@+id/canvas"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:gravity="center_vertical|center_horizontal" />
+        </com.example.android.pixelart.utils.DynamicSquareLayout>
 
         <ImageButton
             android:id="@+id/toolboxBtn"
@@ -58,29 +66,26 @@
             android:layout_alignParentRight="true"
             android:src="@drawable/ic_trash" />
 
-        <ImageView
+        <ImageButton
             android:id="@+id/colorDrawing"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:layout_margin="8dp"
             android:layout_toLeftOf="@id/styleDrawing"
             android:layout_toStartOf="@id/styleDrawing"
             android:backgroundTint="@android:color/transparent"
             android:src="@drawable/ic_circle" />
 
-        <TextView
+        <ImageButton
             android:id="@+id/styleDrawing"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:layout_margin="8dp"
             android:layout_toLeftOf="@id/cameraBtn"
             android:layout_toStartOf="@id/cameraBtn"
-            android:textSize="24sp" />
-
+            android:backgroundTint="@android:color/transparent" />
 
     </RelativeLayout>
 </LinearLayout>

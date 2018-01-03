@@ -40,28 +40,28 @@ public class ToolboxFragment extends Fragment {
         v.findViewById(R.id.greenBtn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                color = Color.GREEN;
+                color = getResources().getColor(android.R.color.holo_green_dark);
                 ((DrawingInterface) getActivity()).setColor(color);
             }
         });
         v.findViewById(R.id.blueBtn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                color = Color.BLUE;
+                color = getResources().getColor(android.R.color.holo_blue_dark);
                 ((DrawingInterface) getActivity()).setColor(color);
             }
         });
         v.findViewById(R.id.redBtn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                color = Color.RED;
+                color = getResources().getColor(android.R.color.holo_red_dark);
                 ((DrawingInterface) getActivity()).setColor(color);
             }
         });
         v.findViewById(R.id.purpleBtn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                color = Color.parseColor("#8A2BE2");
+                color = getResources().getColor(android.R.color.holo_purple);
                 ((DrawingInterface) getActivity()).setColor(color);
             }
         });

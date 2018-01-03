@@ -66,7 +66,7 @@ public class ToolboxActivity extends AppCompatActivity {
         findViewById(R.id.lineBtn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                drawStyle = "line";
+                drawStyle = "ic_square";
                 setPreferences();
             }
         });
