@@ -10,7 +10,6 @@ import android.content.Loader;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -46,15 +45,19 @@ public class MainActivity extends AppCompatActivity implements DrawingInterface,
 
     DrawingCursorAdapter mCursorAdapter;
 
+    private Menu menu;
+
     private Uri currentDrawingUri;
     private boolean showDrawing;
+
+    private long drawingId;
 
     private DrawingFragment drawingFragment;
     private ToolboxFragment toolboxFragment;
     private LibraryFragment libraryFragment;
 
     private Grid grid;
-    private int color = getResources().getColor(android.R.color.holo_blue_dark);
+    private int color;
     private String drawStyle = "free";
     private Bitmap bitmap;
     private boolean photo;
@@ -71,6 +74,8 @@ public class MainActivity extends AppCompatActivity implements DrawingInterface,
         libraryFragment = new LibraryFragment();
 
         mCursorAdapter = new DrawingCursorAdapter(this, null);
+
+        color = getResources().getColor(android.R.color.holo_blue_dark);
 
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.fragment_container, drawingFragment);
@@ -94,12 +99,16 @@ public class MainActivity extends AppCompatActivity implements DrawingInterface,
         return this.grid;
     }
 
-    public void setGrid(Grid grid) {
-        this.grid = grid;
-    }
-
     public int getColor() {
         return color;
+    }
+
+    public String getDrawStyle() {
+        return drawStyle;
+    }
+
+    public DrawingCursorAdapter getmCursorAdapter() {
+        return mCursorAdapter;
     }
 
     public void setColor(int color) {
@@ -107,13 +116,27 @@ public class MainActivity extends AppCompatActivity implements DrawingInterface,
         drawingFragment.updateView();
     }
 
-    public String getDrawStyle() {
-        return drawStyle;
-    }
-
     public void setDrawStyle(String drawStyle) {
         this.drawStyle = drawStyle;
         drawingFragment.updateView();
+    }
+
+    public void setGrid(Grid grid) {
+        this.grid = grid;
+    }
+
+    @Override
+    public void setCurrentDrawingUri(Uri currentDrawingUri) {
+        this.currentDrawingUri = currentDrawingUri;
+    }
+
+    @Override
+    public void setShowDrawing(boolean showDrawing) {
+        this.showDrawing = showDrawing;
+    }
+
+    public void setDrawingId(long drawingId) {
+        this.drawingId = drawingId;
     }
 
     @Override
@@ -121,8 +144,8 @@ public class MainActivity extends AppCompatActivity implements DrawingInterface,
         if (showDrawing && currentDrawingUri != null) {
             getLoaderManager().initLoader(PIXEL_LOADER, null, this);
             showDrawing = false;
-            currentDrawingUri = null;
         }
+
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.fragment_container, drawingFragment);
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
@@ -181,7 +204,7 @@ public class MainActivity extends AppCompatActivity implements DrawingInterface,
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        menu.add(0, 1, 1, menuIconWithText(getResources().getDrawable(R.drawable.ic_save), getResources().getString(R.string.action_save_drawing)));
+        menu.add(0, 1, 1, menuIconWithText(getResources().getDrawable(R.drawable.ic_save), getResources().getString(R.string.action_save_as)));
         menu.add(0, 2, 2, menuIconWithText(getResources().getDrawable(R.drawable.ic_folder), getResources().getString(R.string.action_open_library)));
         return true;
     }
@@ -190,31 +213,47 @@ public class MainActivity extends AppCompatActivity implements DrawingInterface,
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case 1:
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setTitle("Name drawing");
-                final EditText input = new EditText(this);
-                input.setInputType(InputType.TYPE_CLASS_TEXT);
-                builder.setView(input);
-                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        saveDrawing(input.getText().toString());
-                    }
-                });
-                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                });
-
-                builder.show();
+                if (currentDrawingUri != null) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                    builder.setIcon(R.drawable.ic_warning);
+                    builder.setTitle(R.string.choose)
+                            .setItems(R.array.choose_array, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    if (which == 0) {
+                                        saveDrawing();
+                                    } else {
+                                        updateDrawing();
+                                        currentDrawingUri = null;
+                                    }
+                                }
+                            });
+                    builder.create();
+                    builder.show();
+                } else {
+                    saveDrawing();
+                }
                 return true;
             case 2:
                 showLibraryFragment();
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void updateDrawing() {
+        deletePixels((int) drawingId);
+        ContentValues values = new ContentValues();
+        for (int i = 0; i < this.grid.getGridColumns(); i++) {
+            for (int j = 0; j < this.grid.getGridRows(); j++) {
+                if (this.grid.isChecked(i, j)) {
+                    values.put(PixelEntry.COLUMN_DRAWING_ROW, j);
+                    values.put(PixelEntry.COLUMN_DRAWING_COLUMN, i);
+                    values.put(PixelEntry.COLUMN_DRAWING_COLOR, this.grid.getColor(i, j));
+                    values.put(PixelEntry.COLUMN_DRAWING_ID, drawingId);
+                    Uri pixel = getContentResolver().insert(PixelEntry.CONTENT_URI, values);
+                }
+            }
+        }
     }
 
     //source https://stackoverflow.com/a/41569543
@@ -227,37 +266,57 @@ public class MainActivity extends AppCompatActivity implements DrawingInterface,
         return sb;
     }
 
-    private void saveDrawing(String m_Text) {
-        ContentValues values = new ContentValues();
-        values.put(DrawingEntry.COLUMN_NAME, m_Text);
-        Uri drawing = getContentResolver().insert(DrawingEntry.CONTENT_URI, values);
-        values = new ContentValues();
-        for (int i = 0; i < this.grid.getGridColumns(); i++) {
-            for (int j = 0; j < this.grid.getGridRows(); j++) {
-                if (this.grid.isChecked(i, j)) {
-                    values.put(PixelEntry.COLUMN_DRAWING_ROW, j);
-                    values.put(PixelEntry.COLUMN_DRAWING_COLUMN, i);
-                    values.put(PixelEntry.COLUMN_DRAWING_COLOR, this.grid.getColor(i, j));
-                    values.put(PixelEntry.COLUMN_DRAWING_ID, drawing.getLastPathSegment());
-                    Uri pixel = getContentResolver().insert(PixelEntry.CONTENT_URI, values);
+    private void saveDrawing() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Name drawing");
+        final EditText input = new EditText(this);
+        input.setInputType(InputType.TYPE_CLASS_TEXT);
+        builder.setCancelable(false);
+        builder.setView(input);
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String file = input.getText().toString();
+                ContentValues values = new ContentValues();
+                values.put(DrawingEntry.COLUMN_NAME, file);
+                Uri drawing = getContentResolver().insert(DrawingEntry.CONTENT_URI, values);
+                values = new ContentValues();
+                for (int i = 0; i < grid.getGridColumns(); i++) {
+                    for (int j = 0; j < grid.getGridRows(); j++) {
+                        if (grid.isChecked(i, j)) {
+                            values.put(PixelEntry.COLUMN_DRAWING_ROW, j);
+                            values.put(PixelEntry.COLUMN_DRAWING_COLUMN, i);
+                            values.put(PixelEntry.COLUMN_DRAWING_COLOR, grid.getColor(i, j));
+                            values.put(PixelEntry.COLUMN_DRAWING_ID, drawing.getLastPathSegment());
+                            Uri pixel = getContentResolver().insert(PixelEntry.CONTENT_URI, values);
+                        }
+                    }
                 }
             }
-        }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        builder.show();
     }
 
-
-    public DrawingCursorAdapter getmCursorAdapter() {
-        return mCursorAdapter;
+    public void deleteDrawing(int id) {
+        String selectionD = DrawingEntry._ID + "=?";
+        String[] selectionArgs = new String[]{String.valueOf(id)};
+        int rowsDeleted = getContentResolver().delete(DrawingEntry.CONTENT_URI, selectionD, selectionArgs);
+        deletePixels(id);
+        this.grid.clearGrid();
+        showDrawingFragment();
     }
 
-    @Override
-    public void setCurrentDrawingUri(Uri currentDrawingUri) {
-        this.currentDrawingUri = currentDrawingUri;
-    }
-
-    @Override
-    public void setShowDrawing(boolean showDrawing) {
-        this.showDrawing = showDrawing;
+    private void deletePixels(int id) {
+        String selectionP = PixelEntry.COLUMN_DRAWING_ID + "=?";
+        String[] selectionArgs = new String[]{String.valueOf(id)};
+        //foreign key, delete on cascade werkt niet, dus handmatig
+        int pixelsRowsDeleted = getContentResolver().delete(PixelEntry.CONTENT_URI, selectionP, selectionArgs);
     }
 
     @Override
@@ -271,7 +330,6 @@ public class MainActivity extends AppCompatActivity implements DrawingInterface,
                 };
                 return new CursorLoader(this, DrawingEntry.CONTENT_URI, projection,
                         null, null, null);
-
             case 1:
                 projection = new String[]{
                         PixelEntry._ID,
@@ -317,17 +375,6 @@ public class MainActivity extends AppCompatActivity implements DrawingInterface,
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         mCursorAdapter.swapCursor(null);
-    }
-
-    public void deleteDrawing(int id) {
-        String selectionD = DrawingEntry._ID + "=?";
-        String selectionP = PixelEntry.COLUMN_DRAWING_ID + "=?";
-        String[] selectionArgs = new String[]{String.valueOf(id)};
-        int rowsDeleted = getContentResolver().delete(DrawingEntry.CONTENT_URI, selectionD, selectionArgs);
-        //foreign key, delete on cascade werkt niet, dus handmatig
-        int pixelsRowsDeleted = getContentResolver().delete(PixelEntry.CONTENT_URI, selectionP, selectionArgs);
-        this.grid.clearGrid();
-        showDrawingFragment();
     }
 }
 

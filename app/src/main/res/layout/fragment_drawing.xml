@@ -27,15 +27,15 @@
                 android:gravity="center_vertical|center_horizontal" />
         </com.example.android.pixelart.utils.DynamicSquareLayout>
 
-        <ImageButton
-            android:id="@+id/toolboxBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_toLeftOf="@id/eraseBtn"
-            android:layout_toStartOf="@id/eraseBtn"
-            android:src="@drawable/ic_tools" />
+        <!--<ImageButton-->
+        <!--android:id="@+id/toolboxBtn"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignParentBottom="true"-->
+        <!--android:layout_centerHorizontal="true"-->
+        <!--android:layout_toLeftOf="@id/eraseBtn"-->
+        <!--android:layout_toStartOf="@id/eraseBtn"-->
+        <!--android:src="@drawable/ic_tools" />-->
 
         <ImageButton
             android:id="@+id/cameraBtn"
@@ -43,8 +43,10 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:layout_toLeftOf="@id/toolboxBtn"
-            android:layout_toStartOf="@id/toolboxBtn"
+            android:layout_toLeftOf="@id/eraseBtn"
+            android:layout_toStartOf="@id/eraseBtn"
+
+            android:backgroundTint="@android:color/transparent"
             android:src="@drawable/ic_camera" />
 
         <ImageButton
@@ -54,7 +56,9 @@
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_toLeftOf="@id/clearBtn"
+
             android:layout_toStartOf="@id/clearBtn"
+            android:backgroundTint="@android:color/transparent"
             android:src="@drawable/ic_erase" />
 
         <ImageButton
@@ -64,6 +68,8 @@
             android:layout_alignParentBottom="true"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
+
+            android:backgroundTint="@android:color/transparent"
             android:src="@drawable/ic_trash" />
 
         <ImageButton

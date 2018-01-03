@@ -40,12 +40,6 @@ public class DrawingFragment extends Fragment {
 
         canvasView = (CanvasView) v.findViewById(R.id.canvas);
 
-        v.findViewById(R.id.toolboxBtn).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ((DrawingInterface) getActivity()).showToolboxFragment();
-            }
-        });
         v.findViewById(R.id.cameraBtn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -62,14 +56,25 @@ public class DrawingFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 drawStyle = "erase";
-                styleDrawing.setImageResource(getDrawstyle(drawStyle));
-                colorAanduiding.setColorFilter(Color.WHITE);
+
                 canvasView.setDrawStyle(drawStyle);
             }
         });
 
         colorAanduiding = (ImageView) v.findViewById(R.id.colorDrawing);
+        colorAanduiding.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((DrawingInterface) getActivity()).showToolboxFragment();
+            }
+        });
         styleDrawing = (ImageView) v.findViewById(R.id.styleDrawing);
+        styleDrawing.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((DrawingInterface) getActivity()).showToolboxFragment();
+            }
+        });
         updateView();
         return v;
     }
