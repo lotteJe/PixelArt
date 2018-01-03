@@ -9,6 +9,7 @@ import android.widget.CursorAdapter;
 import android.widget.TextView;
 
 import com.example.android.pixelart.R;
+import com.example.android.pixelart.activities.MainActivity;
 import com.example.android.pixelart.persistency.PixelArtDBContract;
 
 /**
@@ -27,13 +28,23 @@ public class DrawingCursorAdapter extends CursorAdapter {
     }
 
     @Override
-    public void bindView(View view, Context context, Cursor cursor) {
+    public void bindView(View view, final Context context, final Cursor cursor) {
 
         TextView nameTv = (TextView) view.findViewById(R.id.name_drawing);
 
         int nameColumnIndex = cursor.getColumnIndex(PixelArtDBContract.DrawingEntry.COLUMN_NAME);
         String name = cursor.getString(nameColumnIndex);
         nameTv.setText(name);
+
+        int idColumnIndex = cursor.getColumnIndex(PixelArtDBContract.DrawingEntry._ID);
+        final int id = cursor.getInt(idColumnIndex);
+
+        view.findViewById(R.id.action_delete_drawing).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((MainActivity)context).deleteDrawing(id);
+            }
+        });
 
     }
 }

@@ -106,7 +106,7 @@ public class CanvasView extends View {
         int column = (int) (event.getX() / ((float) this.cellWidth));
         int row = (int) (event.getY() / ((float) this.cellHeight));
         switch (this.drawStyle) {
-            case "line":
+            case "ic_square":
                 //0: action down
                 //2: action move
                 switch (event.getAction()) {
