@@ -1,5 +1,6 @@
 package com.example.android.pixelart.activities;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.app.LoaderManager;
 import android.content.ContentValues;
@@ -7,6 +8,7 @@ import android.content.CursorLoader;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Loader;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -15,7 +17,9 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
 import android.text.Spannable;
@@ -32,6 +36,7 @@ import com.example.android.pixelart.fragments.LibraryFragment;
 import com.example.android.pixelart.fragments.ToolboxFragment;
 import com.example.android.pixelart.interfaces.DrawingInterface;
 import com.example.android.pixelart.models.Grid;
+import com.squareup.leakcanary.LeakCanary;
 
 import static com.example.android.pixelart.persistency.PixelArtDBContract.*;
 
@@ -62,9 +67,19 @@ public class MainActivity extends AppCompatActivity implements DrawingInterface,
     private Bitmap bitmap;
     private boolean photo;
 
+    private final int MY_PERMISSIONS_REQUEST_FINE_LOCATION = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (LeakCanary.isInAnalyzerProcess(this)) {
+            // This process is dedicated to LeakCanary for heap analysis.
+            // You should not init your app in this process.
+            return;
+        }
+        LeakCanary.install(this.getApplication());
+
         setContentView(R.layout.activity_main);
 
         this.grid = new Grid(26, 26);
@@ -83,7 +98,7 @@ public class MainActivity extends AppCompatActivity implements DrawingInterface,
             ft.add(R.id.fragment_container, toolboxFragment);
         }
         ft.commit();
-
+        checkPermissions();
         getLoaderManager().initLoader(DRAWING_LOADER, null, this);
     }
 
@@ -376,6 +391,18 @@ public class MainActivity extends AppCompatActivity implements DrawingInterface,
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         mCursorAdapter.swapCursor(null);
+    }
+
+    private void checkPermissions() {
+        if (ContextCompat.checkSelfPermission(getApplicationContext(),
+                Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED &&
+                ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                    MY_PERMISSIONS_REQUEST_FINE_LOCATION);
+        }
     }
 }
 
