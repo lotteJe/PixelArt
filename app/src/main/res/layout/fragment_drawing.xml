@@ -45,7 +45,6 @@
             android:layout_centerHorizontal="true"
             android:layout_toLeftOf="@id/eraseBtn"
             android:layout_toStartOf="@id/eraseBtn"
-
             android:backgroundTint="@android:color/transparent"
             android:src="@drawable/ic_camera" />
 

@@ -9,6 +9,7 @@ import android.widget.RelativeLayout;
  * Created by lottejespers.
  */
 // source http://www.gadgetsaint.com/tips/dynamic-square-rectangular-layouts-android/
+    //om grid canvas vierkant te hebben
 public class DynamicSquareLayout extends RelativeLayout {
 
     public DynamicSquareLayout(Context context) {
