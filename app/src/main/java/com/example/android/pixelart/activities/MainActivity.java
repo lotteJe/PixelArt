@@ -50,8 +50,6 @@ public class MainActivity extends AppCompatActivity implements DrawingInterface,
 
     DrawingCursorAdapter mCursorAdapter;
 
-    private Menu menu;
-
     private Uri currentDrawingUri;
     private boolean showDrawing;
 
